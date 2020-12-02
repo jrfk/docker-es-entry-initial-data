@@ -1,0 +1,26 @@
+version: '3.8'
+services:
+  elasticsearch:
+      container_name: elastic-ts
+      build: "es"
+      networks:
+        - esnet
+      volumes:
+        - ./es/data:/tmp
+      ports:
+        - 9200:9200
+      environment:
+        discovery.type: single-node
+
+  kibana:
+      container_name: kibana-ts
+      image: docker.elastic.co/kibana/kibana:7.10.0
+      networks:
+        - esnet
+      links:
+        - elasticsearch
+      ports:
+        - 5601:5601
+
+networks:
+  esnet:
